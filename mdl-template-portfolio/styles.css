@@ -1,4 +1,4 @@
-﻿.portfolio-header {
+.portfolio-header {
   position: relative;
   background-image: url(images/header-bg.jpg);
 }
@@ -154,6 +154,17 @@ img.article-image {
     display: flex;
 }
 
-.portfolio-login .mdl-textfield {
+.portfolio-contact .mdl-textfield {
   width: 100%;
 }
+
+.portfolio-contact form {
+  max-width: 550px;
+  margin: auto;
+}
+
+footer {
+  background-image: url(images/footer-background.png);
+  background-size: cover;
+}
+
