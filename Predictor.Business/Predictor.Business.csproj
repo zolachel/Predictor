@@ -47,10 +47,6 @@
       <Project>{3f4c5b2c-7f11-4e77-9222-77f55a1df354}</Project>
       <Name>Predictor.DataAccess</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Predictor.Model\Predictor.Model.csproj">
-      <Project>{d1e850b7-653c-4a63-9878-02a8ca77791a}</Project>
-      <Name>Predictor.Model</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
