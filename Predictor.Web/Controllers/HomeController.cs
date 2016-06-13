@@ -25,7 +25,8 @@ namespace Predictor.Web.Controllers
 
         #endregion
 
-        public ActionResult Index() {
+        public ActionResult Index(string returnUrl) {
+            ViewBag.ReturnUrl = returnUrl;
             return View();
         }
 
