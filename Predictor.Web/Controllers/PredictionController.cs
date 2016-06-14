@@ -3,19 +3,30 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Predictor.Business;
+using Microsoft.AspNet.Identity;
 
 namespace Predictor.Web.Controllers
 {
-    public class PredictionController : Controller
+    [Authorize]
+    public class PredictionController : BaseController
     {
-        [Authorize]
         public ActionResult Index()
         {
             return View();
         }
 
-        public ActionResult Rules() {
+        public ActionResult Result() {
             return View();
+        }
+
+        public ActionResult Table() {
+            return View();
+        }
+
+        [HttpPost]
+        public JsonResult GetPredictableMatchs() {
+            return Json((new PredictionBiz()).GetPredictableMatchs(User.Identity.GetUserId()));
         }
     }
 }

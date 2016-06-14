@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Predictor.DataAccess", "Pre
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Predictor.Business", "Predictor.Business\Predictor.Business.csproj", "{74DB000E-5397-430E-8E38-F73664748FE1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Predictor.Model", "Predictor.Model\Predictor.Model.csproj", "{5D27E4CE-D014-4A77-B8E6-E8D9E78EA5DD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{74DB000E-5397-430E-8E38-F73664748FE1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{74DB000E-5397-430E-8E38-F73664748FE1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{74DB000E-5397-430E-8E38-F73664748FE1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5D27E4CE-D014-4A77-B8E6-E8D9E78EA5DD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5D27E4CE-D014-4A77-B8E6-E8D9E78EA5DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5D27E4CE-D014-4A77-B8E6-E8D9E78EA5DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5D27E4CE-D014-4A77-B8E6-E8D9E78EA5DD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

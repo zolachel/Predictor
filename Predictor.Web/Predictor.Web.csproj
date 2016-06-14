@@ -215,6 +215,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\PredictionController.cs" />
@@ -228,6 +229,8 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\flags.css" />
+    <Content Include="Content\images\flags.png" />
     <Content Include="Content\images\header-bg.jpg" />
     <Content Include="Content\images\logo.png" />
     <Content Include="favicon.ico" />
@@ -249,6 +252,7 @@
     <Content Include="Scripts\react-15.1.0.min.js" />
     <Content Include="Scripts\react-dom-15.1.0.js" />
     <Content Include="Scripts\react-dom-15.1.0.min.js" />
+    <None Include="Scripts\Views\Prediction\Result.jsx" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
@@ -283,17 +287,28 @@
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Prediction\Index.cshtml" />
+    <Content Include="Views\Home\Rules.cshtml" />
+    <Content Include="Views\Prediction\Result.cshtml" />
+    <Content Include="Views\Prediction\Table.cshtml" />
+    <Content Include="Scripts\Views\Prediction\Index.jsx" />
+    <Content Include="Scripts\Views\Prediction\Table.jsx" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Predictor.Business\Predictor.Business.csproj">
       <Project>{74db000e-5397-430e-8e38-f73664748fe1}</Project>
       <Name>Predictor.Business</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Predictor.Model\Predictor.Model.csproj">
+      <Project>{5d27e4ce-d014-4a77-b8e6-e8d9e78ea5dd}</Project>
+      <Name>Predictor.Model</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Views\Base\" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

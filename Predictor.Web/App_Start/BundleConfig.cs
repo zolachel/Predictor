@@ -23,7 +23,8 @@ namespace Predictor.Web
                         ));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
-                      "~/Content/site.css"));
+                      "~/Content/site.css",
+                      "~/Content/flags.css"));
         }
     }
 }

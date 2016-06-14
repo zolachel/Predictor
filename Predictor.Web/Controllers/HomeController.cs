@@ -8,10 +8,11 @@ using System.Web.Mvc;
 using Microsoft.AspNet.Identity.Owin;
 
 using Predictor.Web.Models;
+using Microsoft.AspNet.Identity;
 
 namespace Predictor.Web.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : BaseController
     {
         #region properties
 
@@ -30,6 +31,10 @@ namespace Predictor.Web.Controllers
             return View();
         }
 
+        public ActionResult Rules() {
+            return View();
+        }
+
         [HttpPost]
         public async Task<bool> Login(LoginViewModel model) {
             // This doesn't count login failures towards account lockout
@@ -40,6 +45,11 @@ namespace Predictor.Web.Controllers
                 return true;
             else
                 return false;
+        }
+
+        [HttpPost]
+        public void Logout() {
+            HttpContext.GetOwinContext().Authentication.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
         }
     }
 }
