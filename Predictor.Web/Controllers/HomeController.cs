@@ -27,8 +27,12 @@ namespace Predictor.Web.Controllers
         #endregion
 
         public ActionResult Index(string returnUrl) {
-            ViewBag.ReturnUrl = returnUrl;
-            return View();
+            if (User.Identity.IsAuthenticated) {
+                return RedirectToAction("Predict", "Prediction");
+            } else {
+                ViewBag.ReturnUrl = returnUrl;
+                return View();
+            }
         }
 
         public ActionResult Rules() {

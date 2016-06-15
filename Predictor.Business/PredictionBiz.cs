@@ -19,7 +19,7 @@ namespace Predictor.Business
         public List<PredictScoreModel> GetPredictableMatchs(string userId)
         {
             List<PredictScoreModel> result = (_dbContext.Matches
-                                                       .Where(m => m.MatchStartTime > DateTime.UtcNow)
+                                                       .Where(m => m.MatchStartTime > DateTime.UtcNow && m.Tournament.IsActive)
                                                        .Select(m => new PredictScoreModel() {
                                                            TournamentName = m.Tournament.Name,
                                                            NationCodeHome = m.Nation.Code,

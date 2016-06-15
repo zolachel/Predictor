@@ -252,6 +252,7 @@
     <Content Include="Scripts\react-15.1.0.min.js" />
     <Content Include="Scripts\react-dom-15.1.0.js" />
     <Content Include="Scripts\react-dom-15.1.0.min.js" />
+    <Content Include="Scripts\Views\Prediction\Predict.jsx" />
     <None Include="Scripts\Views\Prediction\Result.jsx" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Web.config" />
@@ -286,12 +287,11 @@
     <Content Include="Views\Manage\VerifyPhoneNumber.cshtml" />
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
-    <Content Include="Views\Prediction\Index.cshtml" />
     <Content Include="Views\Home\Rules.cshtml" />
     <Content Include="Views\Prediction\Result.cshtml" />
     <Content Include="Views\Prediction\Table.cshtml" />
-    <Content Include="Scripts\Views\Prediction\Index.jsx" />
     <Content Include="Scripts\Views\Prediction\Table.jsx" />
+    <Content Include="Views\Prediction\Predict.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Predictor.Business\Predictor.Business.csproj">

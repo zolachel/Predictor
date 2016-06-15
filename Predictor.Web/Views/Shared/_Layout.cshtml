@@ -26,9 +26,16 @@
                 <nav class="mdl-navigation mdl-typography--body-1-force-preferred-font">
                 @if (User.Identity.IsAuthenticated) {
                     <a class="mdl-navigation__link" href="/Home/Rules">Rules</a>
-                    <a class="mdl-navigation__link" href="/Prediction/Index">Predict</a>
+                    <a class="mdl-navigation__link" href="/Prediction/Predict">Predict</a>
                     <a class="mdl-navigation__link" href="/Prediction/Result">Prediction Result</a>
                     <a class="mdl-navigation__link" href="/Prediction/Table">Table</a>
+                    <button id="menu" class="mdl-button mdl-js-button mdl-button--icon">
+                        <i class="material-icons">menu</i>
+                    </button>
+                    <ul class="mdl-menu mdl-menu--top-left mdl-js-menu mdl-js-ripple-effect"
+                        data-mdl-for="menu">
+                        <li class="mdl-menu__item" onclick="logout()">Log out</li>
+                    </ul>
                 }
                 </nav>
             </div>
@@ -38,7 +45,7 @@
         <div class="mdl-layout__drawer mdl-layout--small-screen-only">
             <nav class="mdl-navigation mdl-typography--body-1-force-preferred-font">
                 <a class="mdl-navigation__link" href="/Home/Rules">Rules</a>
-                <a class="mdl-navigation__link" href="/Prediction/Index">Predict</a>
+                <a class="mdl-navigation__link" href="/Prediction/Predict">Predict</a>
                 <a class="mdl-navigation__link" href="/Prediction/Result">Prediction Result</a>
                 <a class="mdl-navigation__link" href="/Prediction/Table">Table</a>
                 <a class="mdl-navigation__link" href="#" onclick="logout()">Logout</a>
@@ -56,7 +63,6 @@
     @Scripts.Render("~/bundles/react")
     @Scripts.Render("~/bundles/plugin")
     <script defer src="https://code.getmdl.io/1.1.3/material.min.js"></script>
-    @RenderSection("scripts", required: false)
 
     <script>
         const DATE_FORMAT = 'D/M/YYYY';
@@ -66,6 +72,44 @@
             $.each($('.mdl-navigation__link'), function () {
                 $(this).toggleClass('is-active', window.location.pathname.indexOf($(this).attr('href')) == 0);
             });
+        });
+
+        $.ajaxSetup({
+            type: "POST",
+            dataType: 'json',
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                var message;
+                var errorResponse;
+
+                try {
+                    errorResponse = jQuery.parseJSON(XMLHttpRequest.responseText);
+                } catch (err) {
+                    if (XMLHttpRequest.statusText != null && XMLHttpRequest.statusText != '')
+                        errorResponse = { MessageDetail: XMLHttpRequest.statusText };
+                }
+
+                if (errorResponse.MessageDetail != null)
+                    message = errorResponse.MessageDetail;
+                else if (errorResponse.error_message != null)
+                    message = errorResponse.error_message;
+                else if (errorResponse.ExceptionMessage != null)
+                    message = errorResponse.ExceptionMessage;
+                else if (errorResponse.Message != null)
+                    message = errorResponse.Message;
+                else if (errorResponse.message != null)
+                    message = errorResponse.message;
+                else
+                    message = "can not find error message, please contact developer";
+
+                //if (errorResponse.url == null) {
+                //    ShowErrorModal(message);
+                //} else {
+                //    ShowErrorModal(message, function () {
+                //        window.location = errorResponse.url;
+                //    });
+                //}
+                noty({ text: message, type: 'error', theme: 'relax', killer: true });
+            }
         });
 
         function logout() {
@@ -79,5 +123,7 @@
             });
         }
     </script>
+
+    @RenderSection("scripts", required: false)
 </body>
 </html>

@@ -11,8 +11,7 @@ namespace Predictor.Web.Controllers
     [Authorize]
     public class PredictionController : BaseController
     {
-        public ActionResult Index()
-        {
+        public ActionResult Predict() {
             return View();
         }
 
