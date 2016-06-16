@@ -19,7 +19,7 @@ namespace Predictor.Business
         public List<PredictScoreModel> GetPredictableMatchs(string userId)
         {
             List<PredictScoreModel> result = (_dbContext.Matches
-                                                       .Where(m => m.MatchStartTime > DateTime.UtcNow && m.Tournament.IsActive)
+                                                       .Where(m => m.MatchStartTime > DateTime.Now && m.Tournament.IsActive)
                                                        .Select(m => new PredictScoreModel() {
                                                            TournamentName = m.Tournament.Name,
                                                            NationCodeHome = m.Nation1.Code,
@@ -33,7 +33,7 @@ namespace Predictor.Business
                                                            Remark = m.Remark
                                                        })).ToList();
 
-            List<Prediction> predictions = _dbContext.Predictions.Where(p => p.UserId == userId && p.Match.MatchStartTime > DateTime.UtcNow).ToList();
+            List<Prediction> predictions = _dbContext.Predictions.Where(p => p.UserId == userId && p.Match.MatchStartTime > DateTime.Now).ToList();
 
             for (int i = 0; i < result.Count; i++) {
                 Prediction predicted = predictions.Where(p => p.MatchId == result[i].MatchId).FirstOrDefault();
