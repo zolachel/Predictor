@@ -27,7 +27,7 @@ namespace Predictor.Model
         public string Remark { get; set; }
         public byte? ScoreHome { get; set; }
         public byte? ScoreAway { get; set; }
-        public bool UserMissile { get; set; }
+        public bool UseMissile { get; set; }
         public string Comment { get; set; }
     }
 }

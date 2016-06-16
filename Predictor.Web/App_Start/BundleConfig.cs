@@ -19,7 +19,8 @@ namespace Predictor.Web
                         ));
 
             bundles.Add(new ScriptBundle("~/bundles/plugin").Include(
-                        "~/Scripts/jquery.noty.packaged.min.js"
+                        "~/Scripts/jquery.noty.packaged.min.js",
+                        "~/Scripts/moment.min.js"
                         ));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(

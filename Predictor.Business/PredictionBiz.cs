@@ -41,7 +41,7 @@ namespace Predictor.Business
                 if (predicted != null) {
                     result[i].ScoreHome = predicted.ScoreHome;
                     result[i].ScoreAway = predicted.ScoreAway;
-                    result[i].UserMissile = predicted.UseMissile;
+                    result[i].UseMissile = predicted.UseMissile;
                     result[i].Comment = predicted.Comment;
                 }
             }
