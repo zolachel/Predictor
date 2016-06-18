@@ -25,15 +25,14 @@
             <div class="mdl-layout__header-row portfolio-navigation-row mdl-layout--large-screen-only">
                 <nav class="mdl-navigation mdl-typography--body-1-force-preferred-font">
                 @if (User.Identity.IsAuthenticated) {
-                    <a class="mdl-navigation__link" href="/Home/Rules">Rules</a>
                     <a class="mdl-navigation__link" href="/Prediction/Predict">Predict</a>
                     <a class="mdl-navigation__link" href="/Prediction/Result">Prediction Result</a>
                     <a class="mdl-navigation__link" href="/Prediction/Table">Table</a>
                     <button id="menu" class="mdl-button mdl-js-button mdl-button--icon">
                         <i class="material-icons">menu</i>
                     </button>
-                    <ul class="mdl-menu mdl-menu--top-left mdl-js-menu mdl-js-ripple-effect"
-                        data-mdl-for="menu">
+                    <ul class="mdl-menu mdl-menu--top-left mdl-js-menu mdl-js-ripple-effect" data-mdl-for="menu">
+                        <li class="mdl-menu__item" onclick="window.location='/Home/Rules';">Rules</li>
                         <li class="mdl-menu__item" onclick="logout()">Log out</li>
                     </ul>
                 }
@@ -44,10 +43,10 @@
         @if (User.Identity.IsAuthenticated) {
         <div class="mdl-layout__drawer mdl-layout--small-screen-only">
             <nav class="mdl-navigation mdl-typography--body-1-force-preferred-font">
-                <a class="mdl-navigation__link" href="/Home/Rules">Rules</a>
                 <a class="mdl-navigation__link" href="/Prediction/Predict">Predict</a>
                 <a class="mdl-navigation__link" href="/Prediction/Result">Prediction Result</a>
                 <a class="mdl-navigation__link" href="/Prediction/Table">Table</a>
+                <a class="mdl-navigation__link" href="/Home/Rules">Rules</a>
                 <a class="mdl-navigation__link" href="#" onclick="logout()">Logout</a>
             </nav>
         </div>
