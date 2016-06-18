@@ -74,7 +74,9 @@
 .top-buffer-sm { margin-top:10px; }
 
 .width-100-percent { width: 100%; }
+.width-auto { width: auto; }
 
 .align-right { text-align: right; }
+.align-center { text-align: center; }
 
 .score-textbox { text-align: center; }
