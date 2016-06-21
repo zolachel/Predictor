@@ -17,22 +17,44 @@ namespace Predictor.Business
             _dbContext = new PredictorEntities();
         }
 
+        private TimeZoneInfo GetThaiTimeZone() {
+            return TimeZoneInfo.FindSystemTimeZoneById("SE Asia Standard Time");
+        }
+
+        private DateTime GetThaiCurrentDateTime() {
+            return TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, GetThaiTimeZone());
+        }
+
+        private DateTime GetThaiTodayNoonUTC() {
+            return GetThaiCurrentDateTime().Date.AddHours(12).ToUniversalTime();
+        }
+
+        private List<DateTime> GetAvailableMatchTimeAfterNoon() {
+            DateTime noonToday = GetThaiTodayNoonUTC();
+
+            return _dbContext.Matches
+                             .Where(m => m.MatchStartTime >= noonToday && m.Tournament.IsActive)
+                             .Select(m => m.MatchStartTime)
+                             .ToList();
+        }
+
+        private DateTime GetPredictableTimeFrom(DateTime cutOffTime) {
+            return DateTime.UtcNow < cutOffTime ? DateTime.UtcNow : TimeZoneInfo.ConvertTimeFromUtc(cutOffTime.AddDays(1), GetThaiTimeZone()).Date.AddHours(12).ToUniversalTime();
+        }
+
         public List<PredictScoreModel> GetPredictableMatchs(string userId)
         {
             List<PredictScoreModel> result = new List<PredictScoreModel>();
 
-            DateTime noonToday = DateTime.Today.AddHours(12);
+            List<DateTime> availableMatchTime = GetAvailableMatchTimeAfterNoon();
 
-            IQueryable<DateTime> availableMatchTime = _dbContext.Matches
-                                                                .Where(m => m.MatchStartTime >= noonToday && m.Tournament.IsActive)
-                                                                .Select(m => m.MatchStartTime);
             if (availableMatchTime.Count() > 0) {
-                DateTime cutOffTime = availableMatchTime.Min();
+                DateTime cutOffTime = availableMatchTime.Min(); //first match after noon
 
-                DateTime predictableTime = DateTime.Now < cutOffTime ? DateTime.Now : cutOffTime.AddDays(1).Date.AddHours(12);
+                DateTime predictableTimeFrom = GetPredictableTimeFrom(cutOffTime);
 
                 result = (_dbContext.Matches
-                                    .Where(m => m.MatchStartTime > predictableTime && m.Tournament.IsActive)
+                                    .Where(m => m.MatchStartTime > predictableTimeFrom && m.Tournament.IsActive)
                                     .Select(m => new PredictScoreModel() {
                                         TournamentName = m.Tournament.Name,
                                         NationCodeHome = m.Nation1.Code,
@@ -46,7 +68,7 @@ namespace Predictor.Business
                                         Remark = m.Remark
                                     })).ToList();
 
-                List<Prediction> predictions = _dbContext.Predictions.Where(p => p.UserId == userId && p.Match.MatchStartTime > predictableTime).ToList();
+                List<Prediction> predictions = _dbContext.Predictions.Where(p => p.UserId == userId && p.Match.MatchStartTime > predictableTimeFrom).ToList();
 
                 for (int i = 0; i < result.Count; i++) {
                     Prediction predicted = predictions.Where(p => p.MatchId == result[i].MatchId).FirstOrDefault();

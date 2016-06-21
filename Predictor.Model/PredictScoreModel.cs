@@ -21,7 +21,7 @@ namespace Predictor.Model
         {
             get
             {
-                return MatchStartTime.ToUniversalTime().ToString("o");
+                return MatchStartTime.ToString("o") + "Z";
             }
         }
         public string Remark { get; set; }
