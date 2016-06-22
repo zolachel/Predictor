@@ -1,37 +1,35 @@
-﻿var Login = React.createClass({
+﻿var Register = React.createClass({
     getInitialState: function () {
-        return { email: '', password: '', rememberMe: false, showProcessing: false, requiredEmail: false, requiredPassword: false };
+        return { email: '', password: '', confirmPassword: '', showProcessing: false, requiredEmail: false, requiredPassword: false, requiredConfirmPassword: false }
     },
-    handleEmailChange: function(e) {
+    handleEmailChange: function (e) {
         this.setState({ email: e.target.value });
     },
-    handlePasswordChange: function(e) {
+    handlePasswordChange: function (e) {
         this.setState({ password: e.target.value });
     },
-    handleRememberMeChange: function(e) {
-        this.setState({ rememberMe: !this.state.rememberMe });
+    handleConfirmPasswordChange: function (e) {
+        this.setState({ confirmPassword: e.target.value });
     },
-    handleLogin: function (e) {
+    handleRegister: function (e) {
         if (this.isValid()) {
             this.setState({ showProcessing: true });
 
             $.ajax({
                 type: 'POST',
                 datatype: 'json',
-                url: '/Home/Login',
+                url: '/Home/Register',
                 data: {
                     Email: this.state.email,
                     Password: this.state.password,
-                    RememberMe: this.state.rememberMe
+                    ConfirmPassword: this.state.confirmPassword
                 },
                 success: function (data) {
+                    this.setState({ showProcessing: false });
+
                     if (data.toLowerCase() == 'true') {
-                        if (returnUrl)
-                            window.location = returnUrl;
-                        else
-                            window.location = '/Prediction/Predict';
+                        alert("yes");
                     } else {
-                        this.setState({ showProcessing: false });
                         noty({ text: 'Invalid email or password.', type: 'error', theme: 'relax', killer: true });
                     }
                 }.bind(this)
@@ -39,7 +37,7 @@
         }
     },
     isValid: function () {
-        var reqEmail, reqPassword;
+        var reqEmail, reqPassword, reqConfirmPassword;
 
         if (this.state.email == '')
             reqEmail = true;
@@ -51,23 +49,22 @@
         else
             reqPassword = false;
 
-        this.setState({ requiredEmail: reqEmail, requiredPassword: reqPassword });
+        if (this.state.confirmPassword == '' || this.state.password != this.state.confirmPassword)
+            reqConfirmPassword = true;
+        else
+            reqConfirmPassword = false;
 
-        return (this.state.email != '' && this.state.password != '' && this.isValidEmail());
-    },
-    isValidEmail: function() {
-        var reg = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-        return reg.test(this.state.email);
+        this.setState({ requiredEmail: reqEmail, requiredPassword: reqPassword, requiredConfirmPassword: reqConfirmPassword });
+
+        return (this.state.email != '' && this.state.password != '' && this.state.confirmPassword != '' && this.state.password == this.state.confirmPassword);
     },
     render: function () {
         var processingDisplay = { display: this.state.showProcessing ? 'block' : 'none' };
-
-        //https://github.com/google/material-design-lite/issues/1502
-        //https://github.com/google/material-design-lite/pull/4263
         var textboxContainerClass = 'mdl-textfield mdl-js-textfield mdl-textfield--floating-label is-upgraded';
         var emailContainerClass = textboxContainerClass + (this.state.email == '' ? '' : ' is-dirty') + (this.state.requiredEmail ? ' is-invalid' : '');
         var passwordContainerClass = textboxContainerClass + (this.state.password == '' ? '' : ' is-dirty') + (this.state.requiredPassword ? ' is-invalid' : '');
-        
+        var confirmPasswordContainerClass = textboxContainerClass + (this.state.confirmPassword == '' ? '' : ' is-dirty') + (this.state.requiredConfirmPassword ? ' is-invalid' : '');
+
         return (
             <div>
                 <div className={emailContainerClass}>
@@ -78,24 +75,20 @@
                     <input className="mdl-textfield__input" type="password" id="Password" value={this.state.password} onChange={this.handlePasswordChange} />
                     <label className="mdl-textfield__label" for="Password">Password...</label>
                 </div>
-                <label className="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="RememberMe">
-                    <input type="checkbox" id="RememberMe" className="mdl-checkbox__input" checked={this.state.rememberMe} onChange={this.handleRememberMeChange} />
-                    <span className="mdl-checkbox__label">Remember Me</span>
-                </label>
-                <button className="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent top-buffer-sm" onClick={this.handleLogin}>
-                    Log in
+                <div className={confirmPasswordContainerClass}>
+                    <input className="mdl-textfield__input" type="password" id="ConfirmPassword" value={this.state.confirmPassword} onChange={this.handleConfirmPasswordChange} />
+                    <label className="mdl-textfield__label" for="ConfirmPassword">Confirm Password...</label>
+                </div>
+                <button className="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent top-buffer-sm" onClick={this.handleRegister}>
+                    Register
                 </button>
                 <div className="mdl-progress mdl-js-progress mdl-progress__indeterminate width-100-percent" style={processingDisplay}></div>
-            </div>
-        );
+            </div>   
+        )
     }
-});
+})
 
 ReactDOM.render(
-    <Login />,
+    <Register />,
     document.getElementById('content')
 )
-
-
-
-

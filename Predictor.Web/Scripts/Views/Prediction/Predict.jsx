@@ -50,7 +50,7 @@ var PredictableMatch = React.createClass({
                 <div className="mdl-layout-spacer"></div>
                 <div className="mdl-cell mdl-cell--10-col mdl-cell--12-col-phone mdl-card mdl-shadow--4dp">
                     <div className="mdl-card__title">
-                        <h2 className="mdl-card__title-text">{moment(this.props.matchStartTimeUTCString).format(DATETIME_FORMAT)}</h2>
+                        <h3 className="mdl-card__title-text">{moment(this.props.matchStartTimeUTCString).format(DATETIME_FORMAT)}</h3>&nbsp;&nbsp;&nbsp;<span className="remark">{this.props.remark}</span>
                     </div>
                     <div className="mdl-card__menu">
                         <div className="mdl-layout-spacer"></div>
@@ -118,6 +118,7 @@ var PredictableList = React.createClass({
                                   nationFlagHome={node.NationFlagHome}
                                   nationNameAway={node.NationNameAway}
                                   nationFlagAway={node.NationFlagAway}
+                                  remark={node.Remark}
                                   scoreHome={node.ScoreHome == null ? '' : node.ScoreHome}
                                   scoreAway={node.ScoreAway == null ? '' : node.ScoreAway}
                                   useMissile={node.UseMissile}

@@ -257,6 +257,7 @@
     <Content Include="Scripts\react-dom-15.1.0.js" />
     <Content Include="Scripts\react-dom-15.1.0.min.js" />
     <Content Include="Scripts\Views\Prediction\Predict.jsx" />
+    <Content Include="Scripts\Views\Home\Register.jsx" />
     <None Include="Scripts\Views\Prediction\Result.jsx" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Web.config" />
@@ -296,6 +297,7 @@
     <Content Include="Views\Prediction\Table.cshtml" />
     <Content Include="Scripts\Views\Prediction\Table.jsx" />
     <Content Include="Views\Prediction\Predict.cshtml" />
+    <Content Include="Views\Home\Register.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Predictor.Business\Predictor.Business.csproj">

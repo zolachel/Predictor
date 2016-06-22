@@ -39,6 +39,20 @@ namespace Predictor.Web.Controllers
             return View();
         }
 
+        [HttpGet]
+        public ActionResult Register() {
+            if (User.Identity.IsAuthenticated) {
+                return RedirectToAction("Predict", "Prediction");
+            } else {
+                return View();
+            }
+        }
+
+        [HttpPost]
+        public JsonResult Register(RegisterViewModel model) {
+            return Json(true);
+        }
+
         [HttpPost]
         public async Task<bool> Login(LoginViewModel model) {
             // This doesn't count login failures towards account lockout
