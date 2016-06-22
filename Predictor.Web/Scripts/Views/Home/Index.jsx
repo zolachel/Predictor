@@ -32,7 +32,7 @@
                             window.location = '/Prediction/Predict';
                     } else {
                         this.setState({ showProcessing: false });
-                        noty({ text: 'Invalid email or password.', type: 'error', theme: 'relax', killer: true });
+                        noty({ text: 'Invalid email or password or the user is not activated by admin.', type: 'error', theme: 'relax', killer: true });
                     }
                 }.bind(this)
             });

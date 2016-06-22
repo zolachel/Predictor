@@ -5,16 +5,28 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 
+using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 
 using Predictor.Web.Models;
-using Microsoft.AspNet.Identity;
 
 namespace Predictor.Web.Controllers
 {
     public class HomeController : BaseController
     {
         #region properties
+        private ApplicationUserManager _userManager;
+
+        private ApplicationUserManager UserManager
+        {
+            get
+            {
+                if (_userManager == null) {
+                    _userManager = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+                }
+                return _userManager;
+            }
+        }
 
         private ApplicationSignInManager SignInManager
         {
@@ -49,8 +61,16 @@ namespace Predictor.Web.Controllers
         }
 
         [HttpPost]
-        public JsonResult Register(RegisterViewModel model) {
-            return Json(true);
+        public async Task<bool> Register(RegisterViewModel model, string nickname) {
+            ApplicationUser user = new ApplicationUser { UserName = model.Email, Email = model.Email, PhoneNumber = nickname };
+
+            IdentityResult result = await UserManager.CreateAsync(user, model.Password);
+
+            if (result.Succeeded) {
+                return true;
+            } else {
+                return false;
+            }
         }
 
         [HttpPost]
@@ -59,9 +79,13 @@ namespace Predictor.Web.Controllers
             // To enable password failures to trigger account lockout, change to shouldLockout: true
             SignInStatus result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: true);
 
-            if (result == SignInStatus.Success)
-                return true;
-            else
+            if (result == SignInStatus.Success) {
+                ApplicationUser user = await UserManager.FindByEmailAsync(model.Email);
+                if (user.EmailConfirmed)
+                    return true;
+                else 
+                    return false;
+            } else
                 return false;
         }
 

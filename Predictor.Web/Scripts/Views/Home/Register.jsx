@@ -1,6 +1,10 @@
 ﻿var Register = React.createClass({
     getInitialState: function () {
-        return { email: '', password: '', confirmPassword: '', showProcessing: false, requiredEmail: false, requiredPassword: false, requiredConfirmPassword: false }
+        return {
+            email: '', password: '', confirmPassword: '', nickname: '', showProcessing: false,
+            requiredEmail: false, requiredPassword: false, requiredConfirmPassword: false, requiredNickname: false,
+            showRegistered: false
+        }
     },
     handleEmailChange: function (e) {
         this.setState({ email: e.target.value });
@@ -10,6 +14,9 @@
     },
     handleConfirmPasswordChange: function (e) {
         this.setState({ confirmPassword: e.target.value });
+    },
+    handleNicknameChange: function (e) {
+        this.setState({ nickname: e.target.value });
     },
     handleRegister: function (e) {
         if (this.isValid()) {
@@ -22,22 +29,21 @@
                 data: {
                     Email: this.state.email,
                     Password: this.state.password,
-                    ConfirmPassword: this.state.confirmPassword
+                    nickname: this.state.nickname
                 },
                 success: function (data) {
-                    this.setState({ showProcessing: false });
-
                     if (data.toLowerCase() == 'true') {
-                        alert("yes");
+                        this.setState({ showProcessing: false, showRegistered: true });
                     } else {
-                        noty({ text: 'Invalid email or password.', type: 'error', theme: 'relax', killer: true });
+                        this.setState({ showProcessing: false });
+                        noty({ text: 'Duplicated email or invalid password format.', type: 'error', theme: 'relax', killer: true });
                     }
                 }.bind(this)
             });
         }
     },
     isValid: function () {
-        var reqEmail, reqPassword, reqConfirmPassword;
+        var reqEmail, reqPassword, reqConfirmPassword, reqNickname;
 
         if (this.state.email == '')
             reqEmail = true;
@@ -54,37 +60,52 @@
         else
             reqConfirmPassword = false;
 
-        this.setState({ requiredEmail: reqEmail, requiredPassword: reqPassword, requiredConfirmPassword: reqConfirmPassword });
+        if (this.state.nickname == '')
+            reqNickname = true;
+        else
+            reqNickname = false;
 
-        return (this.state.email != '' && this.state.password != '' && this.state.confirmPassword != '' && this.state.password == this.state.confirmPassword);
+        this.setState({ requiredEmail: reqEmail, requiredPassword: reqPassword, requiredConfirmPassword: reqConfirmPassword, requiredNickname: reqNickname });
+
+        return (this.state.email != '' && this.state.password != '' && this.state.confirmPassword != '' && this.state.password == this.state.confirmPassword && this.state.nickname != '');
     },
     render: function () {
-        var processingDisplay = { display: this.state.showProcessing ? 'block' : 'none' };
-        var textboxContainerClass = 'mdl-textfield mdl-js-textfield mdl-textfield--floating-label is-upgraded';
-        var emailContainerClass = textboxContainerClass + (this.state.email == '' ? '' : ' is-dirty') + (this.state.requiredEmail ? ' is-invalid' : '');
-        var passwordContainerClass = textboxContainerClass + (this.state.password == '' ? '' : ' is-dirty') + (this.state.requiredPassword ? ' is-invalid' : '');
-        var confirmPasswordContainerClass = textboxContainerClass + (this.state.confirmPassword == '' ? '' : ' is-dirty') + (this.state.requiredConfirmPassword ? ' is-invalid' : '');
+        if (this.state.showRegistered) {
+            return (<div className="align-center">The account is created, please contact admin to activate your account.</div>)
+        } else {
+            var processingDisplay = { display: this.state.showProcessing ? 'block' : 'none' };
+            var textboxContainerClass = 'mdl-textfield mdl-js-textfield mdl-textfield--floating-label is-upgraded';
+            var emailContainerClass = textboxContainerClass + (this.state.email == '' ? '' : ' is-dirty') + (this.state.requiredEmail ? ' is-invalid' : '');
+            var passwordContainerClass = textboxContainerClass + (this.state.password == '' ? '' : ' is-dirty') + (this.state.requiredPassword ? ' is-invalid' : '');
+            var confirmPasswordContainerClass = textboxContainerClass + (this.state.confirmPassword == '' ? '' : ' is-dirty') + (this.state.requiredConfirmPassword ? ' is-invalid' : '');
+            var nicknameContainerClass = textboxContainerClass + (this.state.nickname == '' ? '' : ' is-dirty') + (this.state.nickname ? ' is-invalid' : '');
 
-        return (
-            <div>
-                <div className={emailContainerClass}>
-                    <input className="mdl-textfield__input" type="email" id="Email" value={this.state.email} onChange={this.handleEmailChange} />
-                    <label className="mdl-textfield__label" for="Email">Email...</label>
-                </div>
-                <div className={passwordContainerClass}>
-                    <input className="mdl-textfield__input" type="password" id="Password" value={this.state.password} onChange={this.handlePasswordChange} />
-                    <label className="mdl-textfield__label" for="Password">Password...</label>
-                </div>
-                <div className={confirmPasswordContainerClass}>
-                    <input className="mdl-textfield__input" type="password" id="ConfirmPassword" value={this.state.confirmPassword} onChange={this.handleConfirmPasswordChange} />
-                    <label className="mdl-textfield__label" for="ConfirmPassword">Confirm Password...</label>
-                </div>
-                <button className="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent top-buffer-sm" onClick={this.handleRegister}>
-                    Register
-                </button>
-                <div className="mdl-progress mdl-js-progress mdl-progress__indeterminate width-100-percent" style={processingDisplay}></div>
-            </div>   
-        )
+            return (
+                <div>
+                    <div className={emailContainerClass}>
+                        <input className="mdl-textfield__input" type="email" id="Email" value={this.state.email} onChange={this.handleEmailChange} />
+                        <label className="mdl-textfield__label" for="Email">Email...</label>
+                    </div>
+                    <div className={passwordContainerClass}>
+                        <input className="mdl-textfield__input" type="password" id="Password" value={this.state.password} onChange={this.handlePasswordChange} />
+                        <label className="mdl-textfield__label" for="Password">Password...</label>
+                    </div>
+                    <div className={confirmPasswordContainerClass}>
+                        <input className="mdl-textfield__input" type="password" id="ConfirmPassword" value={this.state.confirmPassword} onChange={this.handleConfirmPasswordChange} />
+                        <label className="mdl-textfield__label" for="ConfirmPassword">Confirm Password...</label>
+                    </div>
+                    <div className={nicknameContainerClass}>
+                        <input className="mdl-textfield__input" type="text" id="Nickname" value={this.state.nickname} onChange={this.handleNicknameChange} />
+                        <label className="mdl-textfield__label" for="Nickname">Nickname...</label>
+                    </div>
+                    <button className="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent top-buffer-sm" onClick={this.handleRegister}>
+                        Register
+                    </button>
+                    <div className="mdl-progress mdl-js-progress mdl-progress__indeterminate width-100-percent" style={processingDisplay}></div>
+                </div>   
+            )
+        }
+        
     }
 })
 
