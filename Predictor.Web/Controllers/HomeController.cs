@@ -62,11 +62,13 @@ namespace Predictor.Web.Controllers
 
         [HttpPost]
         public async Task<bool> Register(RegisterViewModel model, string nickname) {
-            ApplicationUser user = new ApplicationUser { UserName = model.Email, Email = model.Email, PhoneNumber = nickname };
+            ApplicationUser newUser = new ApplicationUser { UserName = model.Email, Email = model.Email, PhoneNumber = nickname };
 
-            IdentityResult result = await UserManager.CreateAsync(user, model.Password);
+            IdentityResult result = await UserManager.CreateAsync(newUser, model.Password);
 
             if (result.Succeeded) {
+                await UserManager.AddToRoleAsync(newUser.Id, "Player");
+                
                 return true;
             } else {
                 return false;
