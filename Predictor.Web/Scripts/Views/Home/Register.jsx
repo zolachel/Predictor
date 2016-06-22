@@ -70,8 +70,8 @@
         return (this.state.email != '' && this.state.password != '' && this.state.confirmPassword != '' && this.state.password == this.state.confirmPassword && this.state.nickname != '');
     },
     render: function () {
-        if (this.state.showRegistered) {
-            return (<div className="align-center">The account is created, please contact admin to activate your account.</div>)
+        if (!this.state.showRegistered) {
+            return (<div className="align-center">The account is created, please contact admin to activate your account. <br /><br /> <a href="/">Login</a> </div>)
         } else {
             var processingDisplay = { display: this.state.showProcessing ? 'block' : 'none' };
             var textboxContainerClass = 'mdl-textfield mdl-js-textfield mdl-textfield--floating-label is-upgraded';
