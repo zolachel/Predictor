@@ -53,7 +53,11 @@
         }
         <main class="mdl-layout__content">
             @RenderBody()
+            <button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--mini-fab return-to-top">
+                <i class="material-icons"><strong>^</strong></i>
+            </button>
         </main>
+        
     </div>
 
     @Scripts.Render("~/bundles/jquery")
@@ -68,6 +72,20 @@
         $(function () {
             $.each($('.mdl-navigation__link'), function () {
                 $(this).toggleClass('is-active', window.location.pathname.indexOf($(this).attr('href')) == 0);
+            });
+
+            $('.mdl-layout__content').scroll(function () {
+                if ($(this).scrollTop() >= 50) {
+                    $('.return-to-top').fadeIn(200);
+                } else {
+                    $('.return-to-top').fadeOut(200);
+                }
+            });
+
+            $('.return-to-top').click(function () {
+                $('.mdl-layout__content').animate({
+                    scrollTop: 0
+                }, 500);
             });
         });
 
