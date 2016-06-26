@@ -17,7 +17,34 @@
         return (
             <PredictableList data={this.state.predictableList} />
         )
-}
+    }
+});
+
+var PredictableList = React.createClass({
+    render: function () {
+        var predictableMatchs = this.props.data.map(function (node) {
+            return (
+                <PredictableMatch key={node.MatchId}
+                                  matchId={node.MatchId}
+                                  matchStartTimeUTCString={node.MatchStartTimeUTCString}
+                                  nationNameHome={node.NationNameHome}
+                                  nationFlagHome={node.NationFlagHome}
+                                  nationNameAway={node.NationNameAway}
+                                  nationFlagAway={node.NationFlagAway}
+                                  remark={node.Remark}
+                                  scoreHome={node.ScoreHome == null ? '' : node.ScoreHome}
+                                  scoreAway={node.ScoreAway == null ? '' : node.ScoreAway}
+                                  useMissile={node.UseMissile}
+                                  comment={node.Comment == null ? '' : node.Comment}
+                                  url="/Prediction/Predict" />
+            )
+        });
+
+        return (
+            <div>{ predictableMatchs }
+            </div>
+        )
+    }
 });
 
 var PredictableMatch = React.createClass({
@@ -29,8 +56,12 @@ var PredictableMatch = React.createClass({
             comment: this.props.comment,
             edited: false,
             requireScoreHome: false,
-            requireScoreAway: false
+            requireScoreAway: false,
+            processing: false
         };
+    },
+    componentDidUpdate: function () {
+        componentHandler.upgradeDom();
     },
     handleScoreHomeChange: function(e) {
         this.setState({ scoreHome: e.target.value, edited: true });
@@ -46,7 +77,7 @@ var PredictableMatch = React.createClass({
     },
     handleSubmit: function (e) {
         if (this.isValid()) {
-            this.setState({ edited: false });
+            this.setState({ edited: false, processing: true });
 
             $.ajax({
                 url: this.props.url,
@@ -58,15 +89,16 @@ var PredictableMatch = React.createClass({
                     Comment: this.state.comment
                 },
                 success: function (data) {
+                    this.setState({ processing: false });
                     noty({ text: 'Good luck babe!', type: 'success', theme: 'relax', killer: true, timeout: 3000 });
                 }.bind(this)
             });
         }
     },
     isValid: function () {
-        this.setState({ requireScoreHome: (this.state.scoreHome == ''), requireScoreAway: (this.state.scoreAway == '') });
+        this.setState({ requireScoreHome: (this.state.scoreHome === ''), requireScoreAway: (this.state.scoreAway === '') });
 
-        return (this.state.scoreHome != '' && this.state.scoreAway != '');
+        return (this.state.scoreHome !== '' && this.state.scoreAway !== '');
     },
     render: function () {
         var textboxContainerClass = 'mdl-textfield mdl-js-textfield is-upgraded';
@@ -79,6 +111,7 @@ var PredictableMatch = React.createClass({
                 <div className="mdl-cell mdl-cell--10-col mdl-cell--12-col-phone mdl-card mdl-shadow--4dp">
                     <div className="mdl-card__title">
                         <h3 className="mdl-card__title-text">{moment(this.props.matchStartTimeUTCString).format(DATETIME_FORMAT)}</h3>&nbsp;&nbsp;&nbsp;<span className="remark">{this.props.remark}</span>
+                        { this.state.processing ? <Spiner /> : null }
                     </div>
                     <div className="mdl-card__menu">
                         <div className="mdl-layout-spacer"></div>
@@ -133,30 +166,10 @@ var PredictableMatch = React.createClass({
     }
 });
 
-var PredictableList = React.createClass({
+var Spiner = React.createClass({
     render: function () {
-        var predictableMatchs = this.props.data.map(function (node) {
-            return (
-                <PredictableMatch key={node.MatchId}
-                                  matchId={node.MatchId}
-                                  matchStartTimeUTCString={node.MatchStartTimeUTCString}
-                                  nationNameHome={node.NationNameHome}
-                                  nationFlagHome={node.NationFlagHome}
-                                  nationNameAway={node.NationNameAway}
-                                  nationFlagAway={node.NationFlagAway}
-                                  remark={node.Remark}
-                                  scoreHome={node.ScoreHome == null ? '' : node.ScoreHome}
-                                  scoreAway={node.ScoreAway == null ? '' : node.ScoreAway}
-                                  useMissile={node.UseMissile}
-                                  comment={node.Comment == null ? '' : node.Comment}
-                                  url="/Prediction/Predict" />
-            )
-        });
-
         return (
-            <div>
-                { predictableMatchs }
-            </div>
+            <div className="mdl-spinner mdl-js-spinner mdl-spinner--single-color is-active"></div>
         )
     }
 });
