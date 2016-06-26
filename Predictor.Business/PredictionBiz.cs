@@ -83,7 +83,31 @@ namespace Predictor.Business
             }
 
             return result;
+        }
 
+        public int AddOrUpdatePrediction(PredictionModel model) {
+            Prediction prediction = _dbContext.Predictions.Where(p => p.MatchId == model.MatchId && p.UserId == model.UserId).FirstOrDefault();
+
+            if (prediction == null) {
+                prediction = new Prediction();
+                prediction.MatchId = model.MatchId;
+                prediction.UserId = model.UserId;
+                prediction.ScoreHome = model.ScoreHome;
+                prediction.ScoreAway = model.ScoreAway;
+                prediction.UseMissile = model.UseMissile;
+                prediction.Comment = model.Comment;
+
+                _dbContext.Predictions.Add(prediction);
+            } else {
+                prediction.ScoreHome = model.ScoreHome;
+                prediction.ScoreAway = model.ScoreAway;
+                prediction.UseMissile = model.UseMissile;
+                prediction.Comment = model.Comment;
+            }
+
+            _dbContext.SaveChanges();
+
+            return prediction.Id;
         }
     }
 }

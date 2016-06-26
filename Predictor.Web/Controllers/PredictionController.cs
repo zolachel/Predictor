@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using Predictor.Business;
 using Microsoft.AspNet.Identity;
+using Predictor.Model;
 
 namespace Predictor.Web.Controllers
 {
@@ -26,6 +27,13 @@ namespace Predictor.Web.Controllers
         [HttpPost]
         public JsonResult GetPredictableMatchs() {
             return Json((new PredictionBiz()).GetPredictableMatchs(User.Identity.GetUserId()));
+        }
+
+        [HttpPost]
+        public JsonResult Predict(PredictionModel model) {
+            model.UserId = User.Identity.GetUserId();
+
+            return Json((new PredictionBiz()).AddOrUpdatePrediction(model));
         }
     }
 }

@@ -39,19 +39,7 @@
         }
     },
     isValid: function () {
-        var reqEmail, reqPassword;
-
-        if (this.state.email == '')
-            reqEmail = true;
-        else
-            reqEmail = false;
-
-        if (this.state.password == '')
-            reqPassword = true;
-        else
-            reqPassword = false;
-
-        this.setState({ requiredEmail: reqEmail, requiredPassword: reqPassword });
+        this.setState({ requiredEmail: (this.state.email == ''), requiredPassword: (this.state.password == '') });
 
         return (this.state.email != '' && this.state.password != '' && this.isValidEmail());
     },
@@ -61,11 +49,12 @@
     },
     render: function () {
         var processingDisplay = { display: this.state.showProcessing ? 'block' : 'none' };
+        var notValidEmail = !this.state.requiredEmail ? false : !this.isValidEmail();
 
         //https://github.com/google/material-design-lite/issues/1502
         //https://github.com/google/material-design-lite/pull/4263
         var textboxContainerClass = 'mdl-textfield mdl-js-textfield mdl-textfield--floating-label is-upgraded';
-        var emailContainerClass = textboxContainerClass + (this.state.email == '' ? '' : ' is-dirty') + (this.state.requiredEmail ? ' is-invalid' : '');
+        var emailContainerClass = textboxContainerClass + (this.state.email == '' ? '' : ' is-dirty') + (this.state.requiredEmail || notValidEmail ? ' is-invalid' : '');
         var passwordContainerClass = textboxContainerClass + (this.state.password == '' ? '' : ' is-dirty') + (this.state.requiredPassword ? ' is-invalid' : '');
         
         return (
