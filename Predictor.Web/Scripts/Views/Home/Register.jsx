@@ -50,18 +50,14 @@
             requiredNickname: (this.state.nickname == '')
         });
 
-        return (this.state.email != '' && this.state.password != '' && this.state.confirmPassword != '' && this.state.password == this.state.confirmPassword && this.state.nickname != '' && this.isValidEmail());
-    },
-    isValidEmail: function () {
-        var reg = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-        return reg.test(this.state.email);
+        return (this.state.email != '' && this.state.password != '' && this.state.confirmPassword != '' && this.state.password == this.state.confirmPassword && this.state.nickname != '' && isValidEmail(this.state.email));
     },
     render: function () {
         if (this.state.showRegistered) {
             return (<div className="align-center">The account is created, please contact admin to activate your account. <br /><br /> <a href="/">Login</a> </div>)
         } else {
             var processingDisplay = { display: this.state.showProcessing ? 'block' : 'none' };
-            var notValidEmail = !this.state.requiredEmail ? false : !this.isValidEmail();
+            var notValidEmail = this.state.email == '' ? false : !isValidEmail(this.state.email);
 
             var textboxContainerClass = 'mdl-textfield mdl-js-textfield mdl-textfield--floating-label is-upgraded';
             var emailContainerClass = textboxContainerClass + (this.state.email == '' ? '' : ' is-dirty') + (this.state.requiredEmail || notValidEmail ? ' is-invalid' : '');

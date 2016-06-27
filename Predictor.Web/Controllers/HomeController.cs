@@ -95,5 +95,10 @@ namespace Predictor.Web.Controllers
         public void Logout() {
             HttpContext.GetOwinContext().Authentication.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
         }
+
+        [HttpGet]
+        public ActionResult ForgotPassword() {
+            return View();
+        }
     }
 }
