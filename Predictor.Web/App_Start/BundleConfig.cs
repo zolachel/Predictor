@@ -12,12 +12,7 @@ namespace Predictor.Web
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
                         "~/Scripts/jquery.validate*"));
-
-            bundles.Add(new ScriptBundle("~/bundles/react").Include(
-                        "~/Scripts/react-15.1.0.js",
-                        "~/Scripts/react-dom-15.1.0.js"
-                        ));
-
+            
             bundles.Add(new ScriptBundle("~/bundles/plugin").Include(
                         "~/Scripts/jquery.noty.packaged.min.js",
                         "~/Scripts/moment.min.js"

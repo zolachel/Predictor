@@ -74,7 +74,9 @@
                 <button className="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent top-buffer-sm" onClick={this.handleLogin}>
                     Log in
                 </button>
-                <a className="float-right top-buffer" href="/Home/Register">Register</a>
+                <a className="float-right top-buffer" href="/Home/Register">register</a> 
+                <span className="float-right top-buffer">&nbsp;/&nbsp;</span>
+                <a className="float-right top-buffer" href="/Home/ForgetPassword">forgot password?</a>
                 <div className="mdl-progress mdl-js-progress mdl-progress__indeterminate width-100-percent" style={processingDisplay}></div>
             </div>
         );
