@@ -12,22 +12,36 @@
             $.ajax({
                 type: 'POST',
                 datatype: 'json',
-                url: '/Home/Login',
+                url: '/Home/SendResetPasswordEmail',
                 data: {
-                    Email: this.state.email,
-                    Password: this.state.password,
-                    RememberMe: this.state.rememberMe
+                    email: this.state.email
                 },
                 success: function (data) {
-                    if (data.toLowerCase() == 'true') {
-                        if (returnUrl)
-                            window.location = returnUrl;
-                        else
-                            window.location = '/Prediction/Predict';
+                    this.setState({ showProcessing: false });
+
+                    if (data) {
+                        noty({
+                            text: 'go chheck your email... forgetful.',
+                            type: 'warning',
+                            layout: 'center',
+                            theme: 'relax',
+                            killer: true,
+                            callback: {
+                                afterClose: function () {
+                                    window.location = '/Home/Index';
+                                }
+                            }
+                        });
                     } else {
-                        this.setState({ showProcessing: false });
-                        noty({ text: 'Invalid email or password or the user is not activated by admin.', type: 'error', theme: 'relax', killer: true });
+                        noty({
+                            text: 'wrong email!?',
+                            type: 'error',
+                            layout: 'top',
+                            theme: 'relax',
+                            killer: true
+                        });
                     }
+                    
                 }.bind(this)
             });
         }
@@ -35,7 +49,7 @@
     isValid: function () {
         this.setState({ requiredEmail: (this.state.email == '') });
         
-        return (this.state.email != '' && this.state.password != '' && isValidEmail(this.state.email));
+        return (this.state.email != '' && isValidEmail(this.state.email));
     },
     render: function () {
         var processingDisplay = { display: this.state.showProcessing ? 'block' : 'none' };
@@ -43,7 +57,6 @@
         
         var textboxContainerClass = 'mdl-textfield mdl-js-textfield mdl-textfield--floating-label is-upgraded';
         var emailContainerClass = textboxContainerClass + (this.state.email == '' ? '' : ' is-dirty') + (this.state.requiredEmail || notValidEmail ? ' is-invalid' : '');
-        var passwordContainerClass = textboxContainerClass + (this.state.password == '' ? '' : ' is-dirty') + (this.state.requiredPassword ? ' is-invalid' : '');
         
         return (
             <div>

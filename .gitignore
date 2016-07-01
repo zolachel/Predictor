@@ -243,3 +243,5 @@ ModelManifest.xml
 
 # FAKE - F# Make
 .fake/
+/Predictor.Web/appSettings.config
+/Predictor.Web/connectionStrings.config

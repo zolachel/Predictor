@@ -9,6 +9,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 
 using Predictor.Web.Models;
+using Predictor.Business;
 
 namespace Predictor.Web.Controllers
 {
@@ -99,6 +100,43 @@ namespace Predictor.Web.Controllers
         [HttpGet]
         public ActionResult ForgotPassword() {
             return View();
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> SendResetPasswordEmail(string email) {
+            ApplicationUser user = await UserManager.FindByNameAsync(email);
+
+            if (user == null) {
+                return Json(false);
+            } else {
+                string code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
+                var callbackUrl = Url.Action("ResetPassword", "Home", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
+                string emailBody = "Please reset your password by clicking <a href=\"" + callbackUrl + "\">here</a>";
+
+                EmailBiz.SendGrid("Reset Password", emailBody, email);
+
+                return Json(true);
+            }
+        }
+
+        [HttpGet]
+        public ActionResult ResetPassword(string code) {
+            return code == null ? View("Error") : View();
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> ResetPassword(ResetPasswordViewModel model) {
+            var user = await UserManager.FindByNameAsync(model.Email);
+            if (user == null) {
+                throw new Exception("Wrong email ASSHOLE!");
+            } else {
+                var result = await UserManager.ResetPasswordAsync(user.Id, model.Code, model.Password);
+                if (result.Succeeded) {
+                    return Json(true);
+                } else {
+                    return Json(false);
+                }
+            }
         }
     }
 }

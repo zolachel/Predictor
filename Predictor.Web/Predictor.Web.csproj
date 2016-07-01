@@ -18,7 +18,7 @@
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
-    <IISExpressSSLPort />
+    <IISExpressSSLPort>44331</IISExpressSSLPort>
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
@@ -177,6 +177,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\PredictionController.cs" />
+    <Compile Include="Filters\FilterExceptionAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -194,6 +195,8 @@
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="appSettings.config" />
+    <Content Include="connectionStrings.config" />
     <None Include="Properties\PublishProfiles\CrazyPredictor.pubxml" />
     <None Include="Scripts\jquery-2.2.3.intellisense.js" />
     <Content Include="Scripts\common.js" />
@@ -214,6 +217,7 @@
     <Content Include="Scripts\moment.min.js" />
     <Content Include="Scripts\Views\Prediction\Predict.jsx" />
     <Content Include="Scripts\Views\Home\Register.jsx" />
+    <Content Include="Scripts\Views\Home\ResetPassword.jsx" />
     <None Include="Scripts\Views\Prediction\Result.jsx" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Web.config">
@@ -259,6 +263,7 @@
     <Content Include="Views\Prediction\Predict.cshtml" />
     <Content Include="Views\Home\Register.cshtml" />
     <Content Include="Views\Home\ForgotPassword.cshtml" />
+    <Content Include="Views\Home\ResetPassword.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Predictor.Business\Predictor.Business.csproj">
@@ -296,7 +301,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>25582</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:25582/</IISUrl>
+          <IISUrl>https://localhost:44331/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>
