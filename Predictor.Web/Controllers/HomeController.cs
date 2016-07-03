@@ -113,7 +113,7 @@ namespace Predictor.Web.Controllers
                 var callbackUrl = Url.Action("ResetPassword", "Home", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
                 string emailBody = "Please reset your password by clicking <a href=\"" + callbackUrl + "\">here</a>";
 
-                EmailBiz.SendGrid("Reset Password", emailBody, email);
+                await EmailBiz.SendGrid("Reset Password", emailBody, email);
 
                 return Json(true);
             }
@@ -128,7 +128,7 @@ namespace Predictor.Web.Controllers
         public async Task<JsonResult> ResetPassword(ResetPasswordViewModel model) {
             var user = await UserManager.FindByNameAsync(model.Email);
             if (user == null) {
-                throw new Exception("Wrong email ASSHOLE!");
+                return Json(false);
             } else {
                 var result = await UserManager.ResetPasswordAsync(user.Id, model.Code, model.Password);
                 if (result.Succeeded) {

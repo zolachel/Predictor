@@ -54,7 +54,7 @@
     },
     render: function () {
         if (this.state.showRegistered) {
-            return (<div className="align-center">The account is created, please contact admin to activate your account. <br /><br /> <a href="/">Login</a> </div>)
+            return (<div className="align-center">The account is created, please contact Beer to activate your account. <br /><br /> <a href="/">Login</a> </div>)
         } else {
             var processingDisplay = { display: this.state.showProcessing ? 'block' : 'none' };
             var notValidEmail = this.state.email == '' ? false : !isValidEmail(this.state.email);
