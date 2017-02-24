@@ -109,5 +109,70 @@ namespace Predictor.Business
 
             return prediction.Id;
         }
+
+        public List<ScoreTableModel> GetScoreTable() {
+            List<ScoreTableModel> scoreTable = new List<ScoreTableModel>();
+            ScoreTableModel existingInScoreTable;
+            ScoreModel score;
+            
+            IQueryable<Prediction> predictedMatchs = _dbContext.Predictions.Where(p => p.Match.Tournament.IsActive
+                                                                                    && p.Match.MatchStartTime < DateTime.UtcNow
+                                                                                    && p.Match.ScoreHome.HasValue && p.Match.ScoreAway.HasValue);
+
+            foreach(Prediction predictedMatch in predictedMatchs) {
+                score = GetScore(predictedMatch.Match.ScoreHome.Value, predictedMatch.Match.ScoreAway.Value, predictedMatch.ScoreHome, predictedMatch.ScoreAway, predictedMatch.UseMissile);
+
+                existingInScoreTable = scoreTable.FirstOrDefault(r => r.UserId == predictedMatch.UserId);
+
+                if (existingInScoreTable == null) {
+                    existingInScoreTable = new ScoreTableModel() {
+                        UserId = predictedMatch.UserId,
+                        RawScore = score.RawScore,
+                        TotalScore = score.Score,
+                        TotalPredicted = 1,
+                        usedMissile = score.useMissile ? 1 : 0,
+                        missedMissile = score.missMissile ? 1 : 0
+                    };
+
+                    scoreTable.Add(existingInScoreTable);
+                } else {
+                    existingInScoreTable.RawScore += score.RawScore;
+                    existingInScoreTable.TotalScore += score.Score;
+                    existingInScoreTable.TotalPredicted += 1;
+                    existingInScoreTable.usedMissile += score.useMissile ? 1 : 0;
+                    existingInScoreTable.missedMissile += score.missMissile ? 1 : 0;
+                }
+
+                existingInScoreTable.missedMissilePercent = existingInScoreTable.missedMissile * 100 / existingInScoreTable.missedMissile;
+            }
+
+            return scoreTable;
+        }
+
+        private ScoreModel GetScore(byte resultScoreHome, byte resultScoreAway, byte predictedScoreHome, byte predictedScoreAway, bool useMissile) {
+            ScoreModel result = new ScoreModel() { Score = 0, RawScore = 0, useMissile = useMissile, missMissile = false };
+
+            if ((resultScoreHome > resultScoreAway && predictedScoreHome > predictedScoreAway) ||
+                (resultScoreHome < resultScoreAway && predictedScoreHome < predictedScoreAway) ||
+                (resultScoreHome == resultScoreAway && predictedScoreHome == predictedScoreAway)) {
+
+                if (resultScoreHome == predictedScoreHome && resultScoreAway == predictedScoreAway) {
+                    if (predictedScoreHome + predictedScoreAway <= 3)
+                        result.RawScore = 3;
+                    else
+                        result.RawScore = 4;
+                } else {
+                    result.RawScore = 2;
+                }
+
+                result.Score = useMissile ? result.RawScore * 2 : result.RawScore;
+            } else {
+                result.RawScore = 0;
+                result.Score = useMissile ? -4 : 0;
+                result.missMissile = true;
+            }
+
+            return result;
+        }
     }
 }

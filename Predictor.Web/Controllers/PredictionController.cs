@@ -35,5 +35,10 @@ namespace Predictor.Web.Controllers
 
             return Json((new PredictionBiz()).AddOrUpdatePrediction(model));
         }
+
+        [HttpPost]
+        public JsonResult GetScoreTable() {
+            return Json((new PredictionBiz()).GetScoreTable());
+        }
     }
 }
