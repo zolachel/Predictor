@@ -89,8 +89,8 @@
 .width-100-percent { width: 100%; }
 .width-auto { width: auto; }
 
-.align-right { text-align: right; }
-.align-center { text-align: center; }
+.align-right { text-align: right !important; }
+.align-center { text-align: center !important; }
 
 .score-textbox { text-align: center; }
 

@@ -130,8 +130,8 @@ namespace Predictor.Business
                         RawScore = score.RawScore,
                         TotalScore = score.Score,
                         TotalPredicted = 1,
-                        usedMissile = score.useMissile ? 1 : 0,
-                        missedMissile = score.missMissile ? 1 : 0
+                        UsedMissile = score.useMissile ? 1 : 0,
+                        MissedMissile = score.missMissile ? 1 : 0
                     };
 
                     scoreTable.Add(existingInScoreTable);
@@ -139,11 +139,11 @@ namespace Predictor.Business
                     existingInScoreTable.RawScore += score.RawScore;
                     existingInScoreTable.TotalScore += score.Score;
                     existingInScoreTable.TotalPredicted += 1;
-                    existingInScoreTable.usedMissile += score.useMissile ? 1 : 0;
-                    existingInScoreTable.missedMissile += score.missMissile ? 1 : 0;
+                    existingInScoreTable.UsedMissile += score.useMissile ? 1 : 0;
+                    existingInScoreTable.MissedMissile += score.missMissile ? 1 : 0;
                 }
 
-                existingInScoreTable.missedMissilePercent = existingInScoreTable.missedMissile * 100 / existingInScoreTable.missedMissile;
+                existingInScoreTable.MissedMissilePercent = existingInScoreTable.MissedMissile * 100 / existingInScoreTable.MissedMissile;
             }
 
             return scoreTable;

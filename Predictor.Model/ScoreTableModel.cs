@@ -13,8 +13,8 @@ namespace Predictor.Model
         public int TotalPredicted { get; set; }
         public int RawScore { get; set; }
         public int TotalScore { get; set; }
-        public int usedMissile { get; set; }
-        public int missedMissile { get; set; }
-        public double missedMissilePercent { get; set; }
+        public int UsedMissile { get; set; }
+        public int MissedMissile { get; set; }
+        public double MissedMissilePercent { get; set; }
     }
 }
